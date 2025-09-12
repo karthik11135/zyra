@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-# # singlefile
-# import libwyag
-# libwyag.main()
+# import zyra_code
+# zyra_code.main()
 
 import main
 main.main()

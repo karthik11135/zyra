@@ -6,8 +6,6 @@ from common.tree.tree_helper import GITTreeLeaf
 from stage.indexfile import GITIndexEntry
 
 import configparser
-
-
 import os
 
 def branch_get_active(repo):

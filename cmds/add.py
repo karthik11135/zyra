@@ -4,7 +4,6 @@ from stage.indexfile import GITIndexEntry
 from stage.readwrite import index_read, index_write
 from helpers.objects.helpers import object_hash
 
-
 def add(repo, paths, delete=True, skip_missing=False):
     rm(repo, paths, delete=False, skip_missing=True)
     worktree = repo.worktree + os.sep

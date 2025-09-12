@@ -5,7 +5,7 @@ from cmds.commands import *
 def main(argvs=sys.argv[1:]):
     args = argparser.parse_args(argvs)
 
-    print("hey there from wyag!! \n")
+    print("Hey there from zyra!! \n")
 
     match args.command:
         case "add" : cmd_add(args)

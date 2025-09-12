@@ -63,19 +63,10 @@ rev_parser.add_argument("name")
         # On branch master
 
         # Changes to be committed: (comparision of index file with HEAD (previous commit and staging area))
-        #   (use "git restore --staged <file>..." to unstage)
-        # 	modified:   write-yourself-a-git.org
 
         # Changes not staged for commit: (comparisin with staging area (index file) and working tree(workdir))
-        #   (use "git add <file>..." to update what will be committed)
-        #   (use "git restore <file>..." to discard changes in working directory)
-        # 	modified:   write-yourself-a-git.org
 
         # Untracked files: (comparision of index file with HEAD (previous commit and staging area))
-        #   (use "git add <file>..." to include in what will be committed)
-        # 	org-html-themes/
-        # 	wl-copy
-
 status_parser = argsubparser.add_parser("status", help="Print the status of the game")
 
 
