@@ -4,6 +4,7 @@ from helpers.repo.helpers import repo_file, repo_dir
 def ref_resolve(repo, ref):
 
     path = repo_file(repo, ref)
+    print("path im searching: ", path)
     if not os.path.isfile(path):
         return None
     
@@ -43,5 +44,5 @@ def show_ref(repo, refs, with_hash=True, prefix=""):
             show_ref(repo, v, with_hash=with_hash, prefix=f"{prefix}{k}")
 
 def ref_create(repo, path, sha):
-    with open(repo_file(repo, "/refs" + path), 'w') as f:
+    with open(repo_file(repo, "refs", path), 'w') as f:
         f.write(sha + "\n")

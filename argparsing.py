@@ -12,15 +12,14 @@ init_parser.add_argument("path")
 # Prints out the content inside that hash file (sha file -> .git/objects/2a/as5272fs82dg)
 # The internal function that calls this returns object that is type of the sha. (blob, commit etc). So when .serialize() it'll print.
 catfile_parser = argsubparser.add_parser("cat-file")
-catfile_parser.add_argument("type", choices=["blob", "tree", "commit", "tag"])
+catfile_parser.add_argument(
+    "--obj-type", metavar="type", dest="type", choices=["blob", "commit", "tag", "tree"]
+)
 catfile_parser.add_argument("sha")
 
 
 # Given a file it'll make it binary string in a proper format, compresses it stores in the sha path of that binary format (given -w option). It prints the sha hash object.
 hashobject_parser = argsubparser.add_parser("hash-object")
-hashobject_parser.add_argument(
-    "-t", metavar="type", dest="type", choices=["blob", "commit", "tag", "tree"]
-)
 hashobject_parser.add_argument(
     "-w",
     dest="write",
@@ -29,7 +28,7 @@ hashobject_parser.add_argument(
 )
 hashobject_parser.add_argument("path")
 
-
+# Takes the sha of a commit object and prints its contents
 log_parser = argsubparser.add_parser("log", help="Display history of given commit")
 log_parser.add_argument("commit", default="HEAD")
 
@@ -60,13 +59,13 @@ rev_parser.add_argument("name")
 
 
 # git status command
-        # On branch master
+# On branch master
 
-        # Changes to be committed: (comparision of index file with HEAD (previous commit and staging area))
+# Changes to be committed: (comparision of index file with HEAD (previous commit and staging area))
 
-        # Changes not staged for commit: (comparisin with staging area (index file) and working tree(workdir))
+# Changes not staged for commit: (comparisin with staging area (index file) and working tree(workdir))
 
-        # Untracked files: (comparision of index file with HEAD (previous commit and staging area))
+# Untracked files: (comparision of index file with HEAD (previous commit and staging area))
 status_parser = argsubparser.add_parser("status", help="Print the status of the game")
 
 
@@ -79,5 +78,9 @@ add_parser.add_argument("path", nargs="+", help="Paths going to staging area")
 
 
 commit_parser = argsubparser.add_parser("commit", help="Finally commit it goddammit")
-commit_parser.add_argument("-m", metavar="message", dest="message", help="Message to associate with this commit")
-
+commit_parser.add_argument(
+    "-m",
+    metavar="message",
+    dest="message",
+    help="Message to associate with this commit",
+)

@@ -31,7 +31,6 @@ def object_resolve(repo, name):
         return None
 
     if name == "HEAD":
-
         return [ ref_resolve(repo, "HEAD") ]
 
     if hashRE.match(name):

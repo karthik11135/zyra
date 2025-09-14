@@ -17,6 +17,7 @@ from cmds.commit import *
 from cmds.checkout import *
 from stage.readwrite import index_read
 from cmds.status import *
+from termcolor import cprint
 
 import sys
 from datetime import datetime
@@ -48,48 +49,46 @@ def cmd_checkout(args):
     tree_checkout(repo, obj, os.path.realpath(path))
 
 def cmd_init(args):
-    repo_create(args.path)
+    if repo_create(args.path):
+        cprint("zyra repository is succesfully initialised", "light_blue")
 
 def cmd_cat_file(args):
-    t = args.type
     repo = repo_find()
-    obj = GITObject.object_read(repo, object_find(repo, args.sha, obj_type=t.encode()))
+    t = args.type
+    obj_type = t.encode() if t else None
+    obj = GITObject.object_read(repo, object_find(repo, args.sha, obj_type=obj_type))
+    print(obj.obj_type)
     sys.stdout.buffer.write(obj.serialize())
 
 def cmd_hash_obj(args):
-    t = args.type.encode()
     write = args.write
     path = args.path
-
     if write :
         repo = repo_find()
     else:
         repo = None
 
-    with(path, "rb") as f:
+    with open(path, "rb") as f:
         data = f.read()
-        
-        match t:
-            case b'blob': obj = GITBlob(data)
-            case b'commit': obj = GITCommit(data)
-            case b'tag': obj = GITTag(data)
-            case b'tree': obj = GITTree(data)
-            case _: raise Exception("Unknown type provided!")
-        
+        obj = GITBlob(data)
         sha = GITObject.object_write(obj, repo)
+        print(sha)
 
 def cmd_log(args):
     repo = repo_find()
 
     print("Here are your diagraphiz logs")
+    try:
+        log_graphiz(repo, object_find(repo, args.commit), set())
+        print("Logs ended here")
+    except:
+        cprint("You are supposed to provide the sha of a commit object only", "red")
 
-    log_graphiz(repo, object_find(repo, args.commit), set())
-
-    print("Logs ended here")
 
 def cmd_show_ref(args):
     repo = repo_find()
     ref_dict = ref_list(repo)
+    print(ref_dict)
     show_ref(repo, ref_dict, prefix="refs")
 
 def cmd_tag(args):
@@ -110,7 +109,7 @@ def cmd_rev_parse(args):
 
     repo = repo_find()
 
-    print(object_find(repo, obj_type))
+    print(object_find(repo, args.name, obj_type=obj_type, follow=True))
 
 
 def cmd_rm(args):

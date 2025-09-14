@@ -7,7 +7,7 @@ class GITRepository(object):
     gitdir = None
 
     def __init__(self, path, force=False):
-        from helpers.repo.helpers import repo_file  # Lazy import here
+        from helpers.repo.helpers import repo_file  # Lazy importing to avoid circular import conflicts
         self.worktree = path
         self.gitdir = os.path.join(path, '.git')
 

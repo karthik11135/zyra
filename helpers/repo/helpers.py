@@ -1,15 +1,20 @@
 import os
 from common.repo import GITRepository
 import configparser
+from logger import logger
+from termcolor import cprint
 
 def repo_create(path):
     repo = GITRepository(path, True)
 
     if os.path.exists(repo.worktree):
         if not os.path.isdir(repo.worktree):
-            raise Exception("Path is not a directory")
+            cprint("The path that you provided is not a directory brother", "red")
+            return None
         if os.path.exists(repo.gitdir):
-            raise Exception(".git already exists")
+            cprint("zyra repository is already initialized (.git folder is present)", "red")
+            cprint("execute (rm -rf .git) to delete the folder", "yellow")
+            return None
     else :
         os.makedirs(repo.worktree)
     

@@ -1100,10 +1100,3 @@ def cmd_checkout(args):
         os.makedirs(path)
 
     tree_checkout(repo, obj, os.path.realpath(path))
-
-
-
-
-    
-
-

@@ -3,7 +3,8 @@ import os
 import zlib
 from helpers.repo.helpers import repo_file
 
-
+# An object is stored in this manner: 
+# b'{typeof object}{size} \x00{content}' (obj type: {blob, commit, tag, tree})
 class GITObject(object):
     def __init__(self, data=None):
         if data != None:
@@ -24,7 +25,7 @@ class GITObject(object):
     @staticmethod
     def object_write(obj, repo=None):
         # Forming metadata -> head space size content
-        data = obj.serialize()
+        data = obj.serialize() # this gives the content of the object in the format of a b string
         head = obj.obj_type
         str_len = str(len(data)).encode()
         space = b' '
@@ -38,6 +39,8 @@ class GITObject(object):
             return sha
 
         path = repo_file(repo, "objects", sha[0:2], sha[2:], mkdir=True)
+
+        print(path)
 
         if not os.path.exists(path):
             with open(path, "wb") as f:
@@ -56,7 +59,7 @@ class GITObject(object):
         
         with open(path, "rb") as f:
             decomp_str = zlib.decompress(f.read())
-            # b'blobsize \x00content' -> format of storage. 
+            # b'blob{size} \x00{content}' -> format of storage. 
             x = decomp_str.find(b' ')
 
             obj_type = decomp_str[0:x]
