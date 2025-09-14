@@ -4,7 +4,6 @@ from helpers.repo.helpers import repo_file, repo_dir
 def ref_resolve(repo, ref):
 
     path = repo_file(repo, ref)
-    print("path im searching: ", path)
     if not os.path.isfile(path):
         return None
     

@@ -2,6 +2,7 @@ import os
 from helpers.repo.helpers import repo_file
 from helpers.objects.helpers import object_hash, object_find
 from helpers.objects.helpers import tree_to_dict
+from termcolor import cprint
 
 import configparser
 def cmd_status_branch(repo):
@@ -9,14 +10,14 @@ def cmd_status_branch(repo):
         head = f.read()
     
     if head.startswith("ref: refs/heads/"):
-        print("On branch ", head[16:-1])
+        cprint(f"On branch {head[16:-1]}", "blue")
         print()
     else:
         print(f"Currently in detached mode : {object_find(repo, "HEAD")}")
 
 def cmd_status_head_index(repo, index):
     # staging area is index
-    print("Changes staged for commit")
+    cprint("Changes staged for commit:", "blue")
     head = tree_to_dict(repo, "HEAD")
     for entry in index.entries:
         if entry.name in head:
@@ -32,7 +33,7 @@ def cmd_status_head_index(repo, index):
     print()
 
 def cmd_status_index_worktree(repo, index):
-    print("Changes not staged for commit:")
+    cprint("Changes not staged for commit:", "blue")
 
     gitdir_prefix = repo.gitdir + os.path.sep
 
@@ -66,7 +67,7 @@ def cmd_status_index_worktree(repo, index):
             all_files.remove(entry.name)
 
     print()
-    print("Untracked files:")
+    cprint("Untracked files:", "blue")
 
     for f in all_files:
         print(" ", f)

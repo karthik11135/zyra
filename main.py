@@ -11,19 +11,19 @@ def main(argvs=sys.argv[1:]):
     print("\033[38;5;81m")
 
     match args.command:
-        case "add": #
+        case "add":
             cmd_add(args)
         case "checkout":
             cmd_checkout(args)
-        case "init": # done
+        case "init":
             cmd_init(args)
-        case "cat-file": # done
+        case "cat-file":
             cmd_cat_file(args) 
-        case "hash-object": # done
+        case "hash-object":
             cmd_hash_obj(args)
-        case "log": # done
+        case "log":
             cmd_log(args)
-        case "show-ref": # done
+        case "show-ref":
             cmd_show_ref(args)
         case "tag":
             cmd_tag(args)
