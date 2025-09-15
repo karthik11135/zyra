@@ -4,7 +4,6 @@ from helpers.objects.helpers import object_hash, object_find
 from helpers.objects.helpers import tree_to_dict
 from termcolor import cprint
 
-import configparser
 def cmd_status_branch(repo):
     with open(repo_file(repo, "HEAD"), "r") as f:
         head = f.read()

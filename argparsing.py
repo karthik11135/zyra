@@ -70,6 +70,7 @@ status_parser = argsubparser.add_parser("status", help="Print the status of the 
 
 
 rm_parser = argsubparser.add_parser("rm", help="Remove paths from the staging area")
+rm_parser.add_argument("-n", dest="nd", action="store_true", help="unstage")
 rm_parser.add_argument("path", nargs="+", help="Paths to remove")
 
 
@@ -84,3 +85,7 @@ commit_parser.add_argument(
     dest="message",
     help="Message to associate with this commit",
 )
+
+commits_parser = argsubparser.add_parser("all-commits", help="Display all the commits")
+
+branch_parser = argsubparser.add_parser("branch", help="Look at your current branch")

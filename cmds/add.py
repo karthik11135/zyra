@@ -5,6 +5,19 @@ from stage.readwrite import index_read, index_write
 from helpers.objects.helpers import object_hash
 
 def add(repo, paths, delete=True, skip_missing=False):
+    if paths[0] == ".":
+        all_files = list()
+        gitdir_prefix = repo.gitdir + os.path.sep
+        for (root, _, files) in os.walk(repo.worktree, True):
+            if root==repo.gitdir or root.startswith(gitdir_prefix):
+                continue
+            for f in files:
+                full_path = os.path.join(root, f)
+                rel_path = os.path.relpath(full_path, repo.worktree)
+                all_files.append(rel_path)
+                
+        paths = all_files
+
     rm(repo, paths, delete=False, skip_missing=True)
     worktree = repo.worktree + os.sep
 

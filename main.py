@@ -4,6 +4,7 @@ from cmds.commands import *
 from termcolor import cprint
 from stream import *
 
+
 def main(argvs=sys.argv[1:]):
     args = argparser.parse_args(argvs)
 
@@ -18,7 +19,7 @@ def main(argvs=sys.argv[1:]):
         case "init":
             cmd_init(args)
         case "cat-file":
-            cmd_cat_file(args) 
+            cmd_cat_file(args)
         case "hash-object":
             cmd_hash_obj(args)
         case "log":
@@ -35,3 +36,7 @@ def main(argvs=sys.argv[1:]):
             cmd_rm(args)
         case "commit":
             cmd_commit(args)
+        case "all-commits":
+            cmd_commits(args)
+        case "branch":
+            cmd_branch(args)
