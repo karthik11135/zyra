@@ -155,6 +155,7 @@ zyra add ex1.txt
 zyra commit -m "master commit"
 zyra all-commits
 zyra create-branch dev
+zyra switch dev
 zyra add ex2.txt
 zyra commit -m "dev commit"
 zyra all-commits
@@ -209,7 +210,3 @@ zyra switch master
 
 Git was referenced often because Zyra follows the same architecture, so understanding Git internals was crucial to implementing Zyra.
 
----
-
-```
-```
