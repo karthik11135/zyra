@@ -25,7 +25,7 @@ Why the name **zyra**? The name zyra is snappy and inspired by plants. In _Leagu
 
 ---
 
-## ⚙️ High level basics of how a version control system like git operates its storage using objects
+## High level basics of how a version control system like git operates its storage using objects
 
 At its core, Zyra follows the same architecture as Git.
 
