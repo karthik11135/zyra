@@ -8,8 +8,6 @@ Why the name **zyra**? The name zyra is snappy and inspired by plants. In _Leagu
 
 ### Table of Contents
 
-- [🌱 zyra 🌱](#-zyra-)
-    - [Table of Contents](#table-of-contents)
   - [⚙️ High level basics of how a version control system like git operates its storage using objects](#️-high-level-basics-of-how-a-version-control-system-like-git-operates-its-storage-using-objects)
   - [Where are the files stored?](#where-are-the-files-stored)
   - [Object Relationships](#object-relationships)
