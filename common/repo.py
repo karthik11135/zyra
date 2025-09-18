@@ -21,9 +21,9 @@ class GITRepository(object):
         if cf:
             self.conf.read([cf])
         elif not force:
-            raise Exception("No config path")
+            raise Exception("No config path present")
         
         if not force:
             vers = int(self.conf.get("core", "repositoryformatversion"))
             if vers != 0:
-                raise Exception("Unsupported version")
+                raise Exception("Version is unsupported")

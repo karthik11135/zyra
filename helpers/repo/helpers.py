@@ -1,7 +1,6 @@
 import os
 from common.repo import GITRepository
 import configparser
-from logger import logger
 from termcolor import cprint
 
 def repo_create(path):
@@ -41,7 +40,6 @@ def repo_create(path):
 
 
 def repo_path(repo, *path):
-    """Compute path under repo's gitdir."""
     return os.path.join(repo.gitdir, *path)
 
 def repo_file(repo, *path, mkdir=False):
@@ -49,8 +47,6 @@ def repo_file(repo, *path, mkdir=False):
         return repo_path(repo, *path)
 
 def repo_dir(repo, *path, mkdir=False):
-    """Same as repo_path, but mkdir *path if absent if mkdir."""
-
     path = repo_path(repo, *path)
 
     if os.path.exists(path):

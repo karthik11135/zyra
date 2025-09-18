@@ -42,7 +42,6 @@ def cmd_checkout(args):
             raise Exception("The provided path is not a directory")
         if os.listdir(path):
             pass
-            # raise Exception("The given path already contains something")
     else:
         os.makedirs(path)
 
@@ -81,7 +80,7 @@ def cmd_hash_obj(args):
 def cmd_log(args):
     repo = repo_find()
 
-    print("Here are your diagraphiz logs")
+    print("Logs logs logs")
     try:
         log_graphiz(repo, object_find(repo, args.commit), set())
         print("Logs ended here")
