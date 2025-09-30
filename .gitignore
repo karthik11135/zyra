@@ -1,1 +1,4 @@
 __pycache__
+.venv
+dist
+zyra_tool.egg-info
