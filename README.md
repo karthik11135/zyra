@@ -105,7 +105,7 @@ Congratulations 🎉 You just created your first commit with my zyra.
 
 ---
 
-## ⚡ Complex example
+## Complex example
 
 ```bash
 mkdir example
@@ -129,7 +129,7 @@ zyra b-commits
 zyra switch master
 ```
 
-## 🛠️ Command Reference
+## Command Reference
 
 (See `/cmds/commands.py` for implementation details)
 While running these commands unhide your `.git` folder to see how things are changing inside it.
