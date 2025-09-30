@@ -25,96 +25,20 @@ Why the name **zyra**? The name zyra is snappy and inspired by plants. In _Leagu
 
 ---
 
-## High level basics of how a version control system like git operates its storage using objects
-
-At its core, Zyra follows the same architecture as Git.
-
-1. Everything is stored in **objects**.
-2. There are **four types of objects**:
-   - **Blob** → Stores file contents.
-   - **Tree** → Represents the entire working directory (contains items - leaves (blob or tree)).
-     - Reference: `common/tree/tree_obj.py`
-   - **Commit** → Represents a snapshot (tree's sha, parent’s sha, commit message, etc.).
-   - **Tag** → Human-readable tags for objects. These are basically other names given to commits so that its easier to reference. 
-3. An **index file** is used for staging. The entire metadata is stored in this binary file
-   - Reference: `/stage`
-
----
-
-## Where are the files stored?
-
-Zyra stores data by compressing and hashing objects like git.
-
-Example: Let's see how a file `one.txt` with contents `"Hi there"` is stored:
-
-1. Zyra computes its size: `len("Hi there") = 8`.
-2. Converts the contents into a binary string
-3. Format: b'{object_type}{size}\x00{content}'. The object type is blob in this case
-4. Compresses with **zlib**.
-
-Example: b'blob8 Hi there'
-
-5. Also, compute the **SHA1 hash** of b'{object_type}{size}\x00{content}'.
-6. Store the zlib compressed binary file in:
-
-   ```
-   .git/objects/<sha[0:2]>/<sha[2:]>
-   ```
-
-More details: `common/objects.py`
-
-Very similarly tree, commit and tag objects are also stored. 
-
----
-
-## Object Relationships
-
-### Files → Blobs → Tree
-
-```
-   file1.txt  file2.txt
-       │          │
-       ▼          ▼
-     (blob)    (blob)
-        \        /
-         ▼      ▼
-         ┌───────────┐
-         │   Tree    │ 
-         └───────────┘
-```
-
-### Commit Structure
-
-```
- ┌───────────┐
- │  Commit   │───► This object is stored in the path of its own sha
- │-----------│
- │ tree: sha │───► (Tree)
- │ parent:   │───► (Prev Commit)
- │ message   │
- └───────────┘
-```
-
-### Tag Reference
-
-```
-   (Tag) ───► (Blob)
-     │
-     ▼
-   (Commit)
-```
-
-**Overall Flow:**
-
-```
- File → Blob → Tree → Commit
-```
-
----
-
 ## 🚀 Installation 🚀
 
 If you are interested to see how this works, you need to install zyra using one of the following approaches
+
+### Using pip
+
+```bash
+pip install zyra-tool
+```
+After you are done using zyra, you can uninstall it using:
+
+```bash
+pip uninstall zyra-tool
+```
 
 ### Using Docker
 
@@ -229,6 +153,100 @@ While running these commands unhide your `.git` folder to see how things are cha
 | **switch**        | Switches to another branch.                                  | `zyra switch <branch>`             |
 | **create-branch** | Creates a branch and updates HEAD.                           | `zyra create-branch <branch>`      |
 | **b-commits**     | Displays all commits in the current branch.                  | `zyra b-commits`                   |
+
+---
+
+## High level basics of how a version control system like git operates its storage using objects
+
+At its core, Zyra follows the same architecture as Git.
+
+1. Everything is stored in **objects**.
+2. There are **four types of objects**:
+   - **Blob** → Stores file contents.
+   - **Tree** → Represents the entire working directory (contains items - leaves (blob or tree)).
+     - Reference: `common/tree/tree_obj.py`
+   - **Commit** → Represents a snapshot (tree's sha, parent’s sha, commit message, etc.).
+   - **Tag** → Human-readable tags for objects. These are basically other names given to commits so that its easier to reference. 
+3. An **index file** is used for staging. The entire metadata is stored in this binary file
+   - Reference: `/stage`
+
+---
+
+## Where are the files stored?
+
+Zyra stores data by compressing and hashing objects like git.
+
+Example: Let's see how a file `one.txt` with contents `"Hi there"` is stored:
+
+1. Zyra computes its size: `len("Hi there") = 8`.
+2. Converts the contents into a binary string
+3. Format: b'{object_type}{size}\x00{content}'. The object type is blob in this case
+4. Compresses with **zlib**.
+
+Example: b'blob8 Hi there'
+
+5. Also, compute the **SHA1 hash** of b'{object_type}{size}\x00{content}'.
+6. Store the zlib compressed binary file in:
+
+   ```
+   .git/objects/<sha[0:2]>/<sha[2:]>
+   ```
+
+More details: `common/objects.py`
+
+Very similarly tree, commit and tag objects are also stored. 
+
+---
+
+### Issues Reporting and Contributions
+
+If you face any issues, want to suggest features or have any questions, please open an issue on GitHub. 
+If you want to contribute code, please open a pull request.
+
+---
+
+## Object Relationships
+
+### Files → Blobs → Tree
+
+```
+   file1.txt  file2.txt
+       │          │
+       ▼          ▼
+     (blob)    (blob)
+        \        /
+         ▼      ▼
+         ┌───────────┐
+         │   Tree    │ 
+         └───────────┘
+```
+
+### Commit Structure
+
+```
+ ┌───────────┐
+ │  Commit   │───► This object is stored in the path of its own sha
+ │-----------│
+ │ tree: sha │───► (Tree)
+ │ parent:   │───► (Prev Commit)
+ │ message   │
+ └───────────┘
+```
+
+### Tag Reference
+
+```
+   (Tag) ───► (Blob)
+     │
+     ▼
+   (Commit)
+```
+
+**Overall Flow:**
+
+```
+ File → Blob → Tree → Commit
+```
 
 ---
 
