@@ -1,7 +1,5 @@
 # 🌱 zyra 🌱
 
-Wait I messed up somewhere, few commands vanished
-
 **Zyra** is a version control system built from scratch in Python.
 
 Why the name **zyra**? The name zyra is snappy and inspired by plants. In _League of Legends_, Zyra is a plant-themed champion. Since Git also uses tree structures (objects, roots, branches), this felt like an acceptable analogy for me.
@@ -33,6 +31,7 @@ If you are interested to see how this works, you need to install zyra using one 
 
 ### Using pip
 
+[Link to the package](https://pypi.org/project/zyra-tool/)
 ```bash
 pip install zyra-tool
 ```
