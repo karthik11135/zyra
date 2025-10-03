@@ -16,7 +16,7 @@ def cmd_status_branch(repo):
 
 
 def cmd_status_head_index(repo, index):
-    # staging area is index
+    # staging area is index file
     cprint("Changes staged for commit:", "blue")
     head = tree_to_dict(repo, "HEAD")
     for entry in index.entries:

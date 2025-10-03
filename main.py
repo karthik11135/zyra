@@ -29,6 +29,18 @@ def main(argvs=sys.argv[1:]):
     cprint(f"zyra rolling...", (196, 251, 174), random.choice(colors)[0], ["bold", "blink"])
 
     match args.command:
+        case "commit":
+            cmd_commit(args)
+        case "all-commits":
+            cmd_commits(args)
+        case "branch":
+            cmd_branch(args)
+        case "switch":
+            cmd_switch(args)
+        case "create-branch":
+            cmd_create_branch(args)
+        case "b-commits":
+            cmd_bcommits(args)
         case "add":
             cmd_add(args)
         case "checkout":
@@ -51,15 +63,3 @@ def main(argvs=sys.argv[1:]):
             cmd_status(args)
         case "rm":
             cmd_rm(args)
-        case "commit":
-            cmd_commit(args)
-        case "all-commits":
-            cmd_commits(args)
-        case "branch":
-            cmd_branch(args)
-        case "switch":
-            cmd_switch(args)
-        case "create-branch":
-            cmd_create_branch(args)
-        case "b-commits":
-            cmd_bcommits(args)

@@ -10,7 +10,6 @@ from helpers.refs.helpers import ref_resolve
 
 
 def object_hash(fd, fmt, repo=None):
-    """ Hash object, writing it to repo if provided."""
     data = fd.read()
 
     match fmt:
