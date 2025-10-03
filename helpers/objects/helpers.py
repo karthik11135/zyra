@@ -10,6 +10,7 @@ from helpers.refs.helpers import ref_resolve
 
 
 def object_hash(fd, fmt, repo=None):
+    """ Hash object, writing it to repo if provided."""
     data = fd.read()
 
     match fmt:
@@ -65,7 +66,7 @@ def object_find(repo, name, obj_type=None, follow=True):
         raise Exception(f"No such reference {name}.")
 
     if len(sha) > 1:
-        raise Exception("That's weird")
+        raise Exception("Ambiguous reference {name}: Candidates are:\n - {'\n - '.join(sha)}.")
     
 
     sha = sha[0]

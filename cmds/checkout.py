@@ -7,7 +7,10 @@ def tree_checkout(repo, tree, path):
         dest = os.path.join(path, item.path)
 
         if obj.obj_type == b'tree':
-            os.makedirs(dest)
+            if os.path.isdir(dest):
+                pass
+            else:
+                os.makedirs(dest)
             tree_checkout(repo, obj, dest)
         elif obj.obj_type == b'blob':
             with open(dest, "wb") as f:

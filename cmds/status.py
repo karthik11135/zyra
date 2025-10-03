@@ -7,12 +7,13 @@ from termcolor import cprint
 def cmd_status_branch(repo):
     with open(repo_file(repo, "HEAD"), "r") as f:
         head = f.read()
-    
+
     if head.startswith("ref: refs/heads/"):
         cprint(f"On branch {head[16:-1]}", "blue")
         print()
     else:
-        print(f"Currently in detached mode : {object_find(repo, "HEAD")}")
+        print(f"Currently in detached mode : {object_find(repo, 'HEAD')}")
+
 
 def cmd_status_head_index(repo, index):
     # staging area is index
@@ -38,8 +39,8 @@ def cmd_status_index_worktree(repo, index):
 
     all_files = list()
 
-    for (root, _, files) in os.walk(repo.worktree, True):
-        if root==repo.gitdir or root.startswith(gitdir_prefix):
+    for root, _, files in os.walk(repo.worktree, True):
+        if root == repo.gitdir or root.startswith(gitdir_prefix):
             continue
         for f in files:
             full_path = os.path.join(root, f)

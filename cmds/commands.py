@@ -1,4 +1,4 @@
-from helpers.repo.helpers import repo_find, repo_create
+from helpers.repo.helpers import repo_find, repo_create, repo_store_branch
 from cmds.add import add
 from common.blob.blob_obj import GITBlob
 from common.tag.tag_obj import GITTag
@@ -22,29 +22,6 @@ import sys
 from datetime import datetime
 
 
-
-def cmd_branch(args):
-    repo = repo_find()
-    head_file = repo_file(repo, "HEAD")
-    print("branches:")
-    with open(head_file, "r") as f:
-        data = f.read()
-
-    if data.startswith("ref:"):
-        my_branch = data[16:-1]
-        cprint(f" * {my_branch.strip()}", "green")
-    else:
-        my_branch = data[:-1]
-        cprint(f" detached state: * {my_branch.strip()}", "green")
-
-    branches_path = repo_dir(repo, "refs", "heads")
-    for bs in os.listdir(branches_path):
-
-        if bs == my_branch.strip():
-            continue
-        print("   " + bs)
-
-
 def cmd_add(args):
     repo = repo_find()
     add(repo, args.path)
@@ -55,8 +32,13 @@ def cmd_checkout(args):
     sha = args.commit
     path = args.path
 
+    if path == ".":
+        cprint(
+            "You cannot provide the current directory for checkout\nIf you want to go to an other branch use 'switch' command",
+            "red",
+        )
+        return
     obj = GITObject.object_read(repo, object_find(repo, sha))
-
     if obj.obj_type == b"commit":
         obj = GITObject.object_read(repo, obj.kvlm[b"tree"].decode("ascii"))
 
@@ -65,15 +47,19 @@ def cmd_checkout(args):
             raise Exception("The provided path is not a directory")
         if os.listdir(path):
             pass
+            # raise Exception("The given path already contains something")
     else:
         os.makedirs(path)
 
+    print(obj)
     tree_checkout(repo, obj, os.path.realpath(path))
 
 
 def cmd_init(args):
-    if repo_create(args.path):
+    if repo_create("."):
+        repo_store_branch("master")
         cprint("zyra repository is succesfully initialised", "light_blue")
+
 
 
 def cmd_cat_file(args):
@@ -103,7 +89,7 @@ def cmd_hash_obj(args):
 def cmd_log(args):
     repo = repo_find()
 
-    print("Logs logs logs")
+    print("Here are your diagraphiz logs")
     try:
         log_graphiz(repo, object_find(repo, args.commit), set())
         print("Logs ended here")
@@ -201,3 +187,104 @@ def cmd_commits(args):
         obj = GITObject.object_read(repo, p)
         if obj.obj_type == b"commit":
             print(f"{p}: {obj.kvlm[None][:-1].decode()}")
+
+
+def cmd_branch(args):
+    repo = repo_find()
+    head_file = repo_file(repo, "HEAD")
+    print("branches:")
+    with open(head_file, "r") as f:
+        data = f.read()
+
+    if data.startswith("ref:"):
+        my_branch = data[16:-1]
+        cprint(f" * {my_branch.strip()}", "green")
+    else:
+        my_branch = data[:-1]
+        cprint(f" detached state: * {my_branch.strip()}", "green")
+
+    branches_path = repo_dir(repo, "branches")
+    for bs in os.listdir(branches_path):
+
+        if bs == my_branch.strip():
+            continue
+        print("   " + bs)
+
+
+def cmd_switch(args):
+    branch_name = args.branch
+    repo = repo_find()
+    path = "."
+
+    print(branch_name, path)
+
+    branch_exists = False
+    for filename in os.listdir(repo_dir(repo, "refs", "heads")):
+        if filename == branch_name.strip():
+            branch_exists = True
+            break
+
+    if not branch_exists:
+        for filename in os.listdir(repo_file(repo, "branches")):
+            if filename == branch_name.strip():
+                branch_exists = True
+                break
+
+        if branch_exists:
+            with open(repo_file(repo, "HEAD"), "w") as f:
+                f.write(f"ref: refs/heads/{branch_name}\n")
+
+            return
+        
+
+    if not branch_exists:
+        cprint("First create a branch using the 'create-branch' command", "red")
+        return
+
+    branch_name = branch_name.strip()
+
+    obj = GITObject.object_read(repo, object_find(repo, branch_name))
+    if obj.obj_type == b"commit":
+        obj = GITObject.object_read(repo, obj.kvlm[b"tree"].decode("ascii"))
+
+    tree_checkout(repo, obj, os.path.realpath(path))
+
+    with open(repo_file(repo, "HEAD"), "w") as f:
+        f.write(f"ref: refs/heads/{branch_name}\n")
+
+
+def cmd_create_branch(args):
+    newbranch = args.branch
+    repo = repo_find()
+    with open(repo_file(repo, "HEAD"), "w") as f:
+        f.write(f"ref: refs/heads/{newbranch}\n")
+        cprint(f"Created a new branch {newbranch}", "green")
+
+    repo_store_branch(newbranch)
+
+def cmd_bcommits(args):
+    repo = repo_find()
+    with open(repo_file(repo, "HEAD"), "r") as f:
+        branch = f.read()[16:-1]
+
+    branches_folder = repo_dir(repo, "refs", "heads")
+    branch_has_commit = False
+    for filename in os.listdir(branches_folder):
+        if branch == filename:
+            branch_has_commit = True
+
+    if not branch_has_commit:
+        cprint("Your current branch does not have any commits")
+
+    with open(repo_file(repo, "refs", "heads", branch), "r") as f:
+        sha = f.read()[:-1]
+
+    obj = GITObject.object_read(repo, sha)
+    cprint(f"{obj.kvlm[None].decode()[:-1]}: {sha}", "yellow")
+    while b"parent" in obj.kvlm:
+        parent_sha = obj.kvlm[b"parent"].decode()
+        obj = GITObject.object_read(repo, parent_sha)
+        cprint(f"{obj.kvlm[None].decode()[:-1]}: {parent_sha}", "yellow")
+        
+    print()
+    cprint("Those were your commits in this branch", "cyan")

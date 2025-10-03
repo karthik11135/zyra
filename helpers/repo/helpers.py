@@ -22,6 +22,9 @@ def repo_create(path):
     repo_dir(repo, "refs", "tags", mkdir=True)
     repo_dir(repo, "refs", "heads", mkdir=True)
 
+
+    # repo_file(repo, "refs", "heads")
+
     with open(repo_file(repo, "description"), "w") as f:
         f.write("Unnamed repository yo; edit this file to name the repo")
     
@@ -40,6 +43,7 @@ def repo_create(path):
 
 
 def repo_path(repo, *path):
+    """Compute path under repo's gitdir."""
     return os.path.join(repo.gitdir, *path)
 
 def repo_file(repo, *path, mkdir=False):
@@ -47,6 +51,8 @@ def repo_file(repo, *path, mkdir=False):
         return repo_path(repo, *path)
 
 def repo_dir(repo, *path, mkdir=False):
+    """Same as repo_path, but mkdir *path if absent if mkdir."""
+
     path = repo_path(repo, *path)
 
     if os.path.exists(path):
@@ -69,8 +75,16 @@ def repo_find(path=".", required=True):
     parent = os.path.realpath(os.path.join(path, ".."))
     if parent == path:
         if required:
-            raise Exception("No git directory.")
+            cprint("First initalise the zyra directory using 'zyra init' command", "purple")
         else:
             return None
     
     return repo_find(parent, required)
+
+def repo_store_branch(branch_name):
+    repo = repo_find()
+    path = repo_file(repo, "branches")
+    branch_path = os.path.join(path, branch_name)
+
+    with open(branch_path, "wb") as f:
+        pass

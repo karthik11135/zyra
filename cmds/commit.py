@@ -30,7 +30,7 @@ def commit_create(repo, tree, parent, author, timestamp, message):
     minutes = (offset % 3600) // 60
     tz = "{}{:02}{:02}".format("+" if offset > 0 else "-", hours, minutes)
 
-    author = author + timestamp.strftime(" %s ") + tz
+    author = (author or "") + (timestamp.strftime(" %s ") if timestamp else "") + (tz or "")
     commit.kvlm[b"author"] = author.encode("utf8")
     commit.kvlm[b"committer"] = author.encode("utf8")
     commit.kvlm[None] = message.encode("utf8")

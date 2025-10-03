@@ -3,6 +3,7 @@ import os
 from stage.indexfile import GITIndexEntry
 from stage.readwrite import index_read, index_write
 from helpers.objects.helpers import object_hash
+from termcolor import cprint
 
 def add(repo, paths, delete=True, skip_missing=False):
     if paths[0] == ".":
@@ -26,7 +27,8 @@ def add(repo, paths, delete=True, skip_missing=False):
         p = os.path.abspath(path)
         relpath = os.path.relpath(p, repo.worktree)
         if not (p.startswith(worktree) and os.path.isfile(p)):
-            raise Exception(f"Not a file, or outside the worktree: {paths}")
+            cprint(f"Not a file, or outside the worktree: {paths}", "red")
+            return
 
         cleanpaths.add((p, relpath))
 

@@ -6,7 +6,7 @@ argsubparser.required = True
 
 # Initializes an empty git repository
 init_parser = argsubparser.add_parser("init")
-init_parser.add_argument("path")
+# init_parser.add_argument("path")
 
 
 # Prints out the content inside that hash file (sha file -> .git/objects/2a/as5272fs82dg)
@@ -89,3 +89,13 @@ commit_parser.add_argument(
 commits_parser = argsubparser.add_parser("all-commits", help="Display all the commits")
 
 branch_parser = argsubparser.add_parser("branch", help="Look at your current branch")
+
+switch_parser = argsubparser.add_parser("switch", help="Switch branches")
+switch_parser.add_argument("branch", help="Name of the branch to shift to")
+
+create_branch_parser = argsubparser.add_parser(
+    "create-branch", help="Create new branches"
+)
+create_branch_parser.add_argument("branch", help="Name of the new branch")
+
+bcommits_parser = argsubparser.add_parser("b-commits")
