@@ -275,6 +275,7 @@ def cmd_bcommits(args):
 
     if not branch_has_commit:
         cprint("Your current branch does not have any commits")
+        return
 
     with open(repo_file(repo, "refs", "heads", branch), "r") as f:
         sha = f.read()[:-1]
