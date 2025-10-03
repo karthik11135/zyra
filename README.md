@@ -29,7 +29,7 @@ Why the name **zyra**? The name zyra is snappy and inspired by plants. In _Leagu
 
 If you are interested to see how this works, you need to install zyra using one of the following approaches
 
-### Using pip
+### 1. Using pip
 
 [Link to the package](https://pypi.org/project/zyra-tool/)
 ```bash
@@ -41,7 +41,7 @@ After you are done using zyra, you can uninstall it using:
 pip uninstall zyra-tool
 ```
 
-### Using Docker
+### 2. Using Docker
 
 Make sure you have docker installed already.
 
@@ -68,7 +68,7 @@ cd zyra
 docker compose up run zyracli
 ```
 
-### Manual way
+### 3. Clone from github
 
 If you don’t have Docker, you can create an executable directly:
 
@@ -79,6 +79,10 @@ pip install -r requirements.txt
 chmod +x zyra.py
 alias zyra=./zyra.py
 ```
+
+### 4. Using the source code
+
+You can download the source code directly from the releases section [here](https://github.com/karthik11135/zyra/releases) in github. Download the tar.gz file. Once you have the file, you can run ```pip install <downloaded_file_path>``` to install the zyra package.
 
 Now you can use zyra like a command
 
