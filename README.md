@@ -1,33 +1,36 @@
-# 🌱 zyra 🌱
-
-**Zyra** is a version control system built from scratch in Python.
-
-Why the name **zyra**? The name zyra is snappy and inspired by plants. In _League of Legends_, Zyra is a plant-themed champion. Since Git also uses tree structures (objects, roots, branches), this felt like an acceptable analogy for me.
-
----
 
 ### Table of Contents
 
-  - [⚙️ High level basics of how a version control system like git operates its storage using objects](#️-high-level-basics-of-how-a-version-control-system-like-git-operates-its-storage-using-objects)
+- [🌱 zyra 🌱](#-zyra-)
+  - [🚀 Installation 🚀](#-installation-)
+    - [1. Using pip](#1-using-pip)
+    - [2. Using Docker](#2-using-docker)
+    - [3. Clone from github](#3-clone-from-github)
+  - [🚀 Quick start 🚀](#-quick-start-)
+  - [Complex example](#complex-example)
+  - [Command Reference](#command-reference)
+  - [High level basics of how a version control system like git operates its storage using objects](#high-level-basics-of-how-a-version-control-system-like-git-operates-its-storage-using-objects)
   - [Where are the files stored?](#where-are-the-files-stored)
   - [Object Relationships](#object-relationships)
     - [Files → Blobs → Tree](#files--blobs--tree)
     - [Commit Structure](#commit-structure)
     - [Tag Reference](#tag-reference)
-  - [🚀 Installation 🚀](#-installation-)
-    - [Using Docker](#using-docker)
-    - [Manual way](#manual-way)
-  - [🚀 Quick start 🚀](#-quick-start-)
-  - [⚡ Complex example](#-complex-example)
-  - [🛠️ Command Reference](#️-command-reference)
-  - [Challenges Faced](#challenges-faced)
-  - [Why Git?](#why-git)
+  - [Some tough times](#some-tough-times)
+    - [Issues Reporting and Contributions](#issues-reporting-and-contributions)
+        - [Thank you for reading](#thank-you-for-reading)
+
+---
+# 🌱 zyra 🌱
+
+**Zyra** is a version control system built from scratch in Python.
+
+Why the name **zyra**? it is a random gpt suggestion which looked snappy to me. 
 
 ---
 
 ## 🚀 Installation 🚀
 
-If you are interested to see how this works, you need to install zyra using one of the following approaches
+If you are interested to see how this works, you can start by installing zyra using one of the following ways.
 
 ### 1. Using pip
 
@@ -40,6 +43,8 @@ After you are done using zyra, you can uninstall it using:
 ```bash
 pip uninstall zyra-tool
 ```
+
+So that your glorious storage is not eaten up. 
 
 ### 2. Using Docker
 
@@ -80,11 +85,9 @@ chmod +x zyra.py
 alias zyra=./zyra.py
 ```
 
-### 4. Using the source code
+Here is the source code [zyratool](https://github.com/karthik11135/zyra/releases) in github.
 
-You can download the source code directly from the releases section [here](https://github.com/karthik11135/zyra/releases) in github. Download the tar.gz file. Once you have the file, you can run ```pip install <downloaded_file_path>``` to install the zyra package.
-
-Now you can use zyra like a command
+Now you can use zyra like a command in your terminal
 
 > ⚠️ Ensure you’re in the same directory to run commands.
 > Usage: `zyra <subcommand>`
@@ -93,7 +96,7 @@ Now you can use zyra like a command
 
 ## 🚀 Quick start 🚀
 
-Once you have installed and have an interactive shell, you can test it out. The folders you create will be created in your current directory because of the volume mount (if you are using docker).
+Once you have installed and have an interactive shell, you can start running commands. The folders you create will be created in your current directory because of the volume mount (if you are using docker).
 
 ```bash
 mkdir example
@@ -137,7 +140,7 @@ zyra switch master
 ## Command Reference
 
 (See `/cmds/commands.py` for implementation details)
-While running these commands unhide your `.git` folder to see how things are changing inside it.
+While running these commands unhide your `.git` folder to see how files are changing inside. (if you are interested)
 
 | Command           | Description                                                  | Example                            |
 | ----------------- | ------------------------------------------------------------ | ---------------------------------- |
@@ -165,13 +168,13 @@ While running these commands unhide your `.git` folder to see how things are cha
 
 At its core, Zyra follows the same architecture as Git.
 
-1. Everything is stored in **objects**.
+1. Everything is stored in **objects** and are stored inside your .git folder. 
 2. There are **four types of objects**:
    - **Blob** → Stores file contents.
    - **Tree** → Represents the entire working directory (contains items - leaves (blob or tree)).
      - Reference: `common/tree/tree_obj.py`
    - **Commit** → Represents a snapshot (tree's sha, parent’s sha, commit message, etc.).
-   - **Tag** → Human-readable tags for objects. These are basically other names given to commits so that its easier to reference. 
+   - **Tag** → Human-readable tags for objects. These are basically other names given to commits so that its easier for reference. 
 3. An **index file** is used for staging. The entire metadata is stored in this binary file
    - Reference: `/stage`
 
@@ -183,9 +186,11 @@ Zyra stores data by compressing and hashing objects like git.
 
 Example: Let's see how a file `one.txt` with contents `"Hi there"` is stored:
 
+In high level it essentially compresses it and stores it inside .git folder
+
 1. Zyra computes its size: `len("Hi there") = 8`.
 2. Converts the contents into a binary string
-3. Format: b'{object_type}{size}\x00{content}'. The object type is blob in this case
+3. Format: b'{object_type}{size}\x00{content}'. The object type is blob in this case because we are trying to store contents of a file
 4. Compresses with **zlib**.
 
 Example: b'blob8 Hi there'
@@ -200,13 +205,6 @@ Example: b'blob8 Hi there'
 More details: `common/objects.py`
 
 Very similarly tree, commit and tag objects are also stored. 
-
----
-
-### Issues Reporting and Contributions
-
-If you face any issues, want to suggest features or have any questions, please open an issue on GitHub. 
-If you want to contribute code, please open a pull request.
 
 ---
 
@@ -255,15 +253,19 @@ If you want to contribute code, please open a pull request.
 
 ---
 
-## Challenges Faced
+## Some tough times 
 
 1. Writing the **staging area** logic.
 2. Understanding Git’s branching model (solved by using `.git/branches` alongside `/refs/heads`).
 3. Managing **file metadata**, which is verbose (much of it unused).
-4. Converting the **index file → tree SHA** was tricky.
+4. Converting the **index file → tree SHA** - was  tricky.
 
 ---
 
-## Why Git?
+### Issues Reporting and Contributions
 
-Git was referenced often because Zyra follows the same architecture, so understanding Git internals was crucial to implementing Zyra.
+While playing around with zyra you **might** be bombarded with errors if you run commands with unexpected arguments etc. While I've tried my best to cover edge cases and provide error messages, if there are any cases where I've missed, kindly open an issue on github. 
+
+---
+
+##### <span style="color: blue; background-color: yellow;">Thank you for reading</span> 
