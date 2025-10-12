@@ -9,9 +9,8 @@
   - [🚀 Quick start 🚀](#-quick-start-)
   - [Complex example](#complex-example)
   - [Command Reference](#command-reference)
-  - [High level basics of how a version control system like git operates its storage using objects](#high-level-basics-of-how-a-version-control-system-like-git-operates-its-storage-using-objects)
   - [Where are the files stored?](#where-are-the-files-stored)
-  - [Object Relationships](#object-relationships)
+  - [Relationships between objects](#relationships-between-objects)
     - [Files → Blobs → Tree](#files--blobs--tree)
     - [Commit Structure](#commit-structure)
     - [Tag Reference](#tag-reference)
@@ -162,23 +161,7 @@ While running these commands unhide your `.git` folder to see how files are chan
 | **create-branch** | Creates a branch and updates HEAD.                           | `zyra create-branch <branch>`      |
 | **b-commits**     | Displays all commits in the current branch.                  | `zyra b-commits`                   |
 
----
-
-## High level basics of how a version control system like git operates its storage using objects
-
-At its core, Zyra follows the same architecture as Git.
-
-1. Everything is stored in **objects** and are stored inside your .git folder. 
-2. There are **four types of objects**:
-   - **Blob** → Stores file contents.
-   - **Tree** → Represents the entire working directory (contains items - leaves (blob or tree)).
-     - Reference: `common/tree/tree_obj.py`
-   - **Commit** → Represents a snapshot (tree's sha, parent’s sha, commit message, etc.).
-   - **Tag** → Human-readable tags for objects. These are basically other names given to commits so that its easier for reference. 
-3. An **index file** is used for staging. The entire metadata is stored in this binary file
-   - Reference: `/stage`
-
----
+--- 
 
 ## Where are the files stored?
 
@@ -186,7 +169,7 @@ Zyra stores data by compressing and hashing objects like git.
 
 Example: Let's see how a file `one.txt` with contents `"Hi there"` is stored:
 
-In high level it essentially compresses it and stores it inside .git folder
+In high level it essentially compresses it and stores it inside a .git folder
 
 1. Zyra computes its size: `len("Hi there") = 8`.
 2. Converts the contents into a binary string
@@ -208,7 +191,7 @@ Very similarly tree, commit and tag objects are also stored.
 
 ---
 
-## Object Relationships
+## Relationships between objects
 
 ### Files → Blobs → Tree
 
