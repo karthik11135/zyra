@@ -1,24 +1,3 @@
-
-### Table of Contents
-
-- [🌱 zyra 🌱](#-zyra-)
-  - [🚀 Installation 🚀](#-installation-)
-    - [1. Using pip](#1-using-pip)
-    - [2. Using Docker](#2-using-docker)
-    - [3. Clone from github](#3-clone-from-github)
-  - [🚀 Quick start 🚀](#-quick-start-)
-  - [Complex example](#complex-example)
-  - [Command Reference](#command-reference)
-  - [Where are the files stored?](#where-are-the-files-stored)
-  - [Relationships between objects](#relationships-between-objects)
-    - [Files → Blobs → Tree](#files--blobs--tree)
-    - [Commit Structure](#commit-structure)
-    - [Tag Reference](#tag-reference)
-  - [Some tough times](#some-tough-times)
-    - [Issues Reporting and Contributions](#issues-reporting-and-contributions)
-        - [Thank you for reading](#thank-you-for-reading)
-
----
 # 🌱 zyra 🌱
 
 **Zyra** is a version control system built from scratch in Python.
@@ -163,22 +142,25 @@ While running these commands unhide your `.git` folder to see how files are chan
 
 --- 
 
-## Where are the files stored?
+## 
 
-Zyra stores data by compressing and hashing objects like git.
+Just like git, zyra also stores data by compressing and hashing objects. There are four objects mainly - blob, tree, commit and tag. 
 
 Example: Let's see how a file `one.txt` with contents `"Hi there"` is stored:
 
-In high level it essentially compresses it and stores it inside a .git folder
 
-1. Zyra computes its size: `len("Hi there") = 8`.
+At a high level, zyra compresses file contents and stores them as objects inside a folder in the repo (named as `.git`, though any name could be used). The `.git` name is a convention many editors and tools recognize, which is why zyra uses it. 
+
+`one.txt` with contents `Hi there`
+
+1. Zyra computes the content's size: `len("Hi there") = 8`.
 2. Converts the contents into a binary string
 3. Format: b'{object_type}{size}\x00{content}'. The object type is blob in this case because we are trying to store contents of a file
 4. Compresses with **zlib**.
 
 Example: b'blob8 Hi there'
 
-5. Also, compute the **SHA1 hash** of b'{object_type}{size}\x00{content}'.
+5. Also, computes the **SHA1 hash** of b'{object_type}{size}\x00{content}'.
 6. Store the zlib compressed binary file in:
 
    ```
@@ -188,6 +170,14 @@ Example: b'blob8 Hi there'
 More details: `common/objects.py`
 
 Very similarly tree, commit and tag objects are also stored. 
+
+A brief gpt explanation on what's the difference between these objects: 
+
+- Blob — stores raw file contents (data), addressed by its SHA.
+- Tree — records directory entries (names, modes) and points to blobs/subtrees.
+- Commit — snapshot pointing to a tree with metadata (parent(s), author, message).
+- Tag — named reference (lightweight or annotated) pointing to another object with optional message/metadata.
+
 
 ---
 
@@ -233,17 +223,6 @@ Very similarly tree, commit and tag objects are also stored.
 ```
  File → Blob → Tree → Commit
 ```
-
----
-
-## Some tough times 
-
-1. Writing the **staging area** logic.
-2. Understanding Git’s branching model (solved by using `.git/branches` alongside `/refs/heads`).
-3. Managing **file metadata**, which is verbose (much of it unused).
-4. Converting the **index file → tree SHA** - was  tricky.
-
----
 
 ### Issues Reporting and Contributions
 
