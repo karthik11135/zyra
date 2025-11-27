@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="zyra-tool",
-    version="1.0.11",
+    version="1.0.12",
     author="Karthik Rishinarada",
     author_email="karthikdmy11135@gmail.com",
     description="zyra: A version control system that is built from scratch in python",
