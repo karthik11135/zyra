@@ -51,7 +51,7 @@ cd zyra
 docker compose up run zyracli
 ```
 
-### 3. Clone from github
+### 3. Clone from github (RECOMMENDED)
 
 If you don’t have Docker, you can create an executable directly:
 
