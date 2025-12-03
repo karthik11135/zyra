@@ -2,8 +2,6 @@
 
 **Zyra** is a version control system built from scratch in Python.
 
-Why the name **zyra**? it is a random gpt suggestion which looked snappy to me. 
-
 ---
 
 ## 🚀 Installation 🚀
